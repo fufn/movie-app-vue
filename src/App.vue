@@ -23,14 +23,23 @@ export default {
   data: () => ({
     posterBg: "",
   }),
-  mounted() {},
+  watch: {
+    "$route.query": {
+      handler: "onPageQuery",
+      immediate: true,
+      deep: true,
+    },
+  },
   methods: {
     ...mapActions("moviesStore", ["changeCurrentPage"]),
+    onPageQuery({ page = 1 }) {
+      this.changeCurrentPage(Number(page));
+    },
     onChangePoster(poster) {
       this.posterBg = poster;
     },
-    onPageChanged(value) {
-      this.changeCurrentPage(value);
+    onPageChanged(page) {
+      this.$router.push({ query: { page } });
     },
   },
   computed: {
