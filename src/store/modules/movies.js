@@ -51,15 +51,22 @@ const moviesStore = {
       },
       root: true,
     },
-    async fetchMovies({ getters, commit }) {
-      const { currentPage, moviesPerPage, slicedIDs } = getters;
-      const from = currentPage * moviesPerPage - moviesPerPage;
-      const to = currentPage * moviesPerPage;
-      const moviesToFetch = slicedIDs(from, to);
-      const request = moviesToFetch.map((id) => axios.get(`?i=${id}`));
-      const response = await Promise.all(request);
-      const movies = serializeReponse(response);
-      commit(MOVIES, movies);
+    async fetchMovies({ getters, commit, dispatch }) {
+      try {
+        dispatch("toggleLoader", true, { root: true });
+        const { currentPage, moviesPerPage, slicedIDs } = getters;
+        const from = currentPage * moviesPerPage - moviesPerPage;
+        const to = currentPage * moviesPerPage;
+        const moviesToFetch = slicedIDs(from, to);
+        const request = moviesToFetch.map((id) => axios.get(`?i=${id}`));
+        const response = await Promise.all(request);
+        const movies = serializeReponse(response);
+        commit(MOVIES, movies);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        dispatch("toggleLoader", false, { root: true });
+      }
     },
     changeCurrentPage({ commit, dispatch }, page) {
       commit(CURRENT_PAGE, page);
