@@ -2,29 +2,44 @@
   <div id="app">
     <PosterBg :poster="posterBg" />
     <MoviesList :list="moviesList" @changePoster="onChangePoster" />
+    <MoviesPagination
+      :currentPage="currentPage"
+      :perPage="moviesPerPage"
+      :total="moviesLength"
+      @pageChanged="onPageChanged"
+    />
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import MoviesList from "./components/MoviesList.vue";
 import PosterBg from "./components/PosterBg.vue";
+import MoviesPagination from "./components/MoviesPagination.vue";
 
 export default {
   name: "App",
-  components: { MoviesList, PosterBg },
+  components: { MoviesList, PosterBg, MoviesPagination },
   data: () => ({
     posterBg: "",
   }),
   mounted() {},
   methods: {
-    ...mapActions("moviesStore", ["fetchMovies"]),
+    ...mapActions("moviesStore", ["changeCurrentPage"]),
     onChangePoster(poster) {
       this.posterBg = poster;
     },
+    onPageChanged(value) {
+      this.changeCurrentPage(value);
+    },
   },
   computed: {
-    ...mapGetters("moviesStore", ["moviesList"]),
+    ...mapGetters("moviesStore", [
+      "moviesList",
+      "currentPage",
+      "moviesPerPage",
+      "moviesLength",
+    ]),
   },
 };
 </script>
