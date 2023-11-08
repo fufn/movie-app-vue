@@ -2,6 +2,7 @@
   <div id="app">
     <Loader />
     <PosterBg :poster="posterBg" />
+    <Header />
     <MoviesList :list="moviesList" @changePoster="onChangePoster" />
     <MoviesPagination
       :currentPage="currentPage"
@@ -18,10 +19,11 @@ import MoviesList from "./components/MoviesList.vue";
 import PosterBg from "./components/PosterBg.vue";
 import MoviesPagination from "./components/MoviesPagination.vue";
 import Loader from "./components/Loader.vue";
+import Header from "./components/Header.vue";
 
 export default {
   name: "App",
-  components: { MoviesList, PosterBg, MoviesPagination, Loader },
+  components: { MoviesList, PosterBg, MoviesPagination, Loader, Header },
   data: () => ({
     posterBg: "",
   }),

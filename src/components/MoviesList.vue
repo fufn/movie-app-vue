@@ -1,7 +1,7 @@
 <template>
   <div>
     <BContainer>
-      <h3 class="list-title d-flex justify-content-center">IMDB Top 250</h3>
+      <h3 class="list-title d-flex justify-content-center">{{ listTitle }}</h3>
       <BRow>
         <template v-if="isExist">
           <BCol cols="3" v-for="(movie, key) in list" :key="key">
@@ -22,7 +22,7 @@
 
 <script>
 import MovieItem from "./MovieItem.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "MoviesList",
   components: {
@@ -35,8 +35,12 @@ export default {
     },
   },
   computed: {
+    ...mapGetters("moviesStore", ["isSearch"]),
     isExist() {
       return Boolean(Object.keys(this.list).length);
+    },
+    listTitle() {
+      return this.isSearch ? "Seach result" : "IMDB Top 250";
     },
   },
   methods: {
