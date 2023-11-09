@@ -14,6 +14,5 @@ const store = new Vuex.Store({
   actions: {},
   modules: { moviesStore, loaderStore, notificationStore },
 });
-store.dispatch("initMoviesStore");
 
 export default store;
